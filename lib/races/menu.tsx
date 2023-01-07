@@ -1,5 +1,5 @@
 import AthleteInfo from './athleteInfo';
-import Copyright from './Copyright';
+import Copyright from './copyright';
 import CourseInfo from './courseInfo';
 import Stopwatch from './stopwatch';
 import Title from './title';
