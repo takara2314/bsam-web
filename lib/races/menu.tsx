@@ -19,7 +19,7 @@ const Menu = ({ assoc, liveInfo }: Props) => {
       />
       <Stopwatch />
       <AthleteInfo />
-      <CourseInfo />
+      <CourseInfo marks={liveInfo ? liveInfo.marks : null} />
       <Copyright />
     </nav>
   );
