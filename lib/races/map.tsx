@@ -12,6 +12,7 @@ interface Props {
 const Map = ({ assoc, liveInfo }: Props) => {
   const mapObj = useRef<GoogleMap>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const zoomNum = 18;
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -28,8 +29,8 @@ const Map = ({ assoc, liveInfo }: Props) => {
         lat: Number(process.env.NEXT_PUBLIC_LATITUDE ?? 0.0),
         lng: Number(process.env.NEXT_PUBLIC_LONGITUDE ?? 0.0)
       });
-      map.setZoom(19);
-    }, 2000);
+      map.setZoom(zoomNum);
+    }, 100);
   }, []);
 
   const onUnmount = useCallback(() => {
@@ -45,7 +46,7 @@ const Map = ({ assoc, liveInfo }: Props) => {
             width: '100%',
             height: '100%'
           }}
-          zoom={19}
+          zoom={zoomNum}
           tilt={0}
           onLoad={onLoad}
           onUnmount={onUnmount}
@@ -68,14 +69,17 @@ const Map = ({ assoc, liveInfo }: Props) => {
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     scale: 5,
                     strokeColor: 'white',
-                    fillColor: 'white',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 2,
+                    fillColor: 'rgb(59, 130, 246)',
                     fillOpacity: 1,
                     rotation: user.heading
                   }}
+                  zIndex={10}
                 />
               )}
 
-              {/* {liveInfo.marks.map((user, index) =>
+              {liveInfo.marks.map((user, index) =>
                 <Marker
                   key={user.user_id}
                   position={{
@@ -83,11 +87,12 @@ const Map = ({ assoc, liveInfo }: Props) => {
                     lng: user.longitude
                   }}
                   icon={{
-                    url: `/icon_mark_${index + 1}.png`,
+                    url: `/marks/${index + 1}.png`,
                     scaledSize: new google.maps.Size(40, 40)
                   }}
+                  zIndex={0}
                 />
-              )} */}
+              )}
             </>
           )}
         </GoogleMap>
