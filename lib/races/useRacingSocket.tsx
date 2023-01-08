@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { LiveMessage, RacingSocket } from '../../models';
 
-const useRacing = (assocId: string) => {
-  const conn = useRef<WebSocket>();
+const useRacingSocket = (assocId: string) => {
+  const conn = useRef<RacingSocket>();
   const [connecting, setConnecting] = useState<boolean>(false);
 
   const connectWs = useCallback(() => {
@@ -28,7 +29,15 @@ const useRacing = (assocId: string) => {
   const readWsMsg = (ev: MessageEvent<any>) => {
     const msgs: string[] = ev.data.split('\n');
     for (let msg of msgs) {
-      console.log(JSON.parse(msg));
+      const tmp = JSON.parse(msg);
+
+      switch (tmp["type"]) {
+        case "live":
+          if (conn.current!.onReceiveLiveMsg) {
+            conn.current!.onReceiveLiveMsg(tmp as LiveMessage);
+          }
+          break;
+      }
     }
   };
 
@@ -36,7 +45,7 @@ const useRacing = (assocId: string) => {
     connectWs();
   }, [connectWs]);
 
-  return [conn, connecting];
+  return { conn, connecting };
 };
 
-export default useRacing;
+export default useRacingSocket;

@@ -2,9 +2,14 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import type { Association } from '../../models';
+import type { Association, LiveMessage } from '../../models';
 
-const Map = ({ assoc }: { assoc: Association }) => {
+interface Props {
+  assoc: Association;
+  liveInfo: LiveMessage | null;
+}
+
+const Map = ({ assoc, liveInfo }: Props) => {
   const mapObj = useRef<GoogleMap>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
@@ -50,37 +55,41 @@ const Map = ({ assoc }: { assoc: Association }) => {
             mapTypeId: 'satellite'
           }}
         >
-          {/* {liveInfo.athletes.map((user, index) =>
-            <Marker
-              key={user.user_id}
-              position={{
-                lat: user.latitude,
-                lng: user.longitude
-              }}
-              icon={{
-                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                scale: 5,
-                strokeColor: colors[index],
-                fillColor: colors[index],
-                fillOpacity: 1,
-                rotation: user.heading
-              }}
-            />
-          )}
+          {liveInfo && (
+            <>
+              {liveInfo.athletes.map((user, index) =>
+                <Marker
+                  key={user.user_id}
+                  position={{
+                    lat: user.latitude,
+                    lng: user.longitude
+                  }}
+                  icon={{
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    scale: 5,
+                    strokeColor: 'white',
+                    fillColor: 'white',
+                    fillOpacity: 1,
+                    rotation: user.heading
+                  }}
+                />
+              )}
 
-          {liveInfo.marks.map((user, index) =>
-            <Marker
-              key={user.user_id}
-              position={{
-                lat: user.latitude,
-                lng: user.longitude
-              }}
-              icon={{
-                url: `/icon_mark_${index + 1}.png`,
-                scaledSize: new google.maps.Size(40, 40)
-              }}
-            />
-          )} */}
+              {/* {liveInfo.marks.map((user, index) =>
+                <Marker
+                  key={user.user_id}
+                  position={{
+                    lat: user.latitude,
+                    lng: user.longitude
+                  }}
+                  icon={{
+                    url: `/icon_mark_${index + 1}.png`,
+                    scaledSize: new google.maps.Size(40, 40)
+                  }}
+                />
+              )} */}
+            </>
+          )}
         </GoogleMap>
       ) : (
         <div className="w-full h-full bg-gray-200" />
