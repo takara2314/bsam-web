@@ -1,19 +1,27 @@
-import Map from '../../../lib/races/map';
-import Menu from '../../../lib/races/menu';
+import { notFound } from 'next/navigation';
+import Racing from '../../../lib/races/racing';
+import type { Association } from '../../../models';
 
 interface Props {
   params: { id: string };
 }
 
-const Page = ({ params }: Props) => {
-  return (
-    <div className="w-full h-full grid grid-cols-4">
-      <Menu assocId={params.id} />
-      <main className="col-span-3">
-        <Map assocId={params.id} />
-      </main>
-    </div>
-  );
+const fetchAssociation = async (assocId: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/associations/${assocId}`);
+  if (!res.ok) {
+    return undefined;
+  }
+  return res.json() as Promise<Association>;
+};
+
+const Page = async ({ params }: Props) => {
+  const assoc = await fetchAssociation(params.id);
+
+  if (!assoc) {
+    notFound();
+  }
+
+  return <Racing assoc={assoc} />;
 };
 
 export default Page;

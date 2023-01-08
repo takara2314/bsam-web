@@ -2,8 +2,9 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import type { Association } from '../../models';
 
-const Map = ({ assocId }: { assocId: string }) => {
+const Map = ({ assoc }: { assoc: Association }) => {
   const mapObj = useRef<GoogleMap>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
