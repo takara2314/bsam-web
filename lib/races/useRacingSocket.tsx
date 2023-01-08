@@ -6,7 +6,7 @@ const useRacingSocket = (assocId: string) => {
   const [connecting, setConnecting] = useState<boolean>(false);
 
   const connectWs = useCallback(() => {
-    conn.current = new WebSocket(`wss://gateway.bsam.app/v3/racing/${assocId}`);
+    conn.current = new WebSocket(`${process.env.NEXT_PUBLIC_WS_API}/racing/${assocId}`);
 
     conn.current!.onopen = () => {
       setConnecting(true);
