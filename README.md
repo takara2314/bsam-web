@@ -13,6 +13,14 @@
 
 視覚障がいをお持ちの方がセーリング（ヨット競技）を行うのを支援するスマートフォンアプリのウェブサイトです。レースモニタで競技者やレースの状況を確認することができます。
 
+## 関連リポジトリ
+
+[選手用アプリ（メイン）](https://github.com/takara2314/bsam)
+
+[本部用アプリ](https://github.com/takara2314/bsam-admin)
+
+[サーバー](https://github.com/takara2314/bsam-server)
+
 ## ライセンス
 
 [GPL-3.0](./LICENSE)
