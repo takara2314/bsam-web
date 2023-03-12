@@ -58,7 +58,7 @@ const Map = ({ assoc, liveInfo }: Props) => {
         >
           {liveInfo && (
             <>
-              {liveInfo.athletes.map((user, index) =>
+              {liveInfo.athletes.map((user) =>
                 <Marker
                   key={user.user_id}
                   position={{
@@ -81,7 +81,7 @@ const Map = ({ assoc, liveInfo }: Props) => {
 
               {liveInfo.marks.map((user, index) =>
                 <Marker
-                  key={user.user_id}
+                  key={user.user_id !== '' ? user.user_id : `mark${index}`}
                   position={{
                     lat: user.latitude,
                     lng: user.longitude

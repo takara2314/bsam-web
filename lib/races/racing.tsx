@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { Association, LiveMessage } from '../../models';
+import type { Association, LiveMessage, StartRaceMessage } from '../../models';
 import Map from './map';
 import Menu from './menu';
 import useRacingSocket from './useRacingSocket';
@@ -10,6 +10,7 @@ const Racing = ({ assoc }: { assoc: Association }) => {
   // Connect the racing socket
   const { conn } = useRacingSocket(assoc.id);
   const [liveInfo, setLiveInfo] = useState<LiveMessage | null>(null);
+  const [startRaceInfo, setStartRaceInfo] = useState<StartRaceMessage | null>(null);
 
   useEffect(() => {
     if (!conn) {
@@ -19,6 +20,11 @@ const Racing = ({ assoc }: { assoc: Association }) => {
     conn.current!.onReceiveLiveMsg = (msg: LiveMessage) => {
       setLiveInfo(msg);
     };
+
+    conn.current!.onReceiveStartRaceMsg = (msg: StartRaceMessage) => {
+      setStartRaceInfo(msg);
+      console.log(msg);
+    };
   }, [conn]);
 
   return (
@@ -26,6 +32,7 @@ const Racing = ({ assoc }: { assoc: Association }) => {
       <Menu
         assoc={assoc}
         liveInfo={liveInfo}
+        startRaceInfo={startRaceInfo}
       />
       <main className="col-span-3">
         <Map

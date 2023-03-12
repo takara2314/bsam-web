@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { LiveMessage, RacingSocket } from '../../models';
+import type { LiveMessage, StartRaceMessage, RacingSocket } from '../../models';
 
 const useRacingSocket = (assocId: string) => {
   const conn = useRef<RacingSocket>();
@@ -35,6 +35,12 @@ const useRacingSocket = (assocId: string) => {
         case "live":
           if (conn.current!.onReceiveLiveMsg) {
             conn.current!.onReceiveLiveMsg(tmp as LiveMessage);
+          }
+          break;
+
+        case "start_race":
+          if (conn.current!.onReceiveStartRaceMsg) {
+            conn.current!.onReceiveStartRaceMsg(tmp as StartRaceMessage);
           }
           break;
       }

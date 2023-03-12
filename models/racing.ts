@@ -3,6 +3,12 @@ export interface LiveMessage {
   marks: PositionWithId[]
 }
 
+export interface StartRaceMessage {
+  started: boolean
+  start_at: number
+  end_at: number
+}
+
 export interface PositionWithId {
   user_id: string
   latitude: number
@@ -23,4 +29,5 @@ export interface LocationWithDetail {
 
 export interface RacingSocket extends WebSocket {
   onReceiveLiveMsg?: (msg: LiveMessage) => void;
+  onReceiveStartRaceMsg?: (msg: StartRaceMessage) => void;
 }
