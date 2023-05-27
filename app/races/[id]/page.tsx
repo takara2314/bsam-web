@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import Racing from '../../../lib/races/racing';
 import type { Association } from '../../../models';
 
+export const config = { runtime: 'edge' };
+
 interface Props {
   params: { id: string };
 }
