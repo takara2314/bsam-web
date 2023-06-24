@@ -1,6 +1,6 @@
 export interface LiveMessage {
-  athletes: LocationWithDetail[]
-  marks: PositionWithId[]
+  athletes: Athlete[]
+  marks: Mark[]
 }
 
 export interface StartRaceMessage {
@@ -9,22 +9,34 @@ export interface StartRaceMessage {
   end_at: number
 }
 
-export interface PositionWithId {
+export interface Athlete {
   user_id: string
-  latitude: number
-  longitude: number
+  next_mark_no: number
+  course_limit: number
+  battery_level: number
+  compass_degree: number
+  location: Location
 }
 
-export interface LocationWithDetail {
+export interface Mark {
   user_id: string
+  mark_no: number
+  battery_level: number
+  position: Position
+}
+
+export interface Position {
+  latitude: number
+  longitude: number
+  accuracy: number
+}
+
+export interface Location {
   latitude: number
   longitude: number
   accuracy: number
   heading: number
   heading_fixing: number
-  compass_degree: number
-  next_mark_no: number
-  course_limit: number
 }
 
 export interface RacingSocket extends WebSocket {

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { calcDistance } from '../../utils/geo';
-import type { PositionWithId } from '../../models';
+import type { Mark } from '../../models';
 
 interface Props {
-  marks: PositionWithId[] | null;
+  marks: Mark[] | null;
 }
 
 interface DistanceProps {
-  markA: PositionWithId;
-  markB: PositionWithId;
+  markA: Mark;
+  markB: Mark;
   distance: number;
   position: string;
 }
@@ -111,16 +111,16 @@ const Distance = ({markA, markB, distance, position}: DistanceProps) => {
   );
 };
 
-const isEachValidMark = (markA: PositionWithId, markB: PositionWithId): boolean => {
+const isEachValidMark = (markA: Mark, markB: Mark): boolean => {
   return markA.user_id !== '' && markB.user_id !== '';
 };
 
-const calcDistanceMarkToMark = (markA: PositionWithId, markB: PositionWithId): number => {
+const calcDistanceMarkToMark = (markA: Mark, markB: Mark): number => {
   const distance = calcDistance(
-    markA.latitude,
-    markA.longitude,
-    markB.latitude,
-    markB.longitude
+    markA.position.latitude,
+    markA.position.longitude,
+    markB.position.latitude,
+    markB.position.longitude
   );
 
   return Math.floor(distance);

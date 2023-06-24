@@ -62,8 +62,8 @@ const Map = ({ assoc, liveInfo }: Props) => {
                 <Marker
                   key={user.user_id}
                   position={{
-                    lat: user.latitude,
-                    lng: user.longitude
+                    lat: user.location.latitude,
+                    lng: user.location.longitude
                   }}
                   icon={{
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
@@ -73,7 +73,7 @@ const Map = ({ assoc, liveInfo }: Props) => {
                     strokeWeight: 2,
                     fillColor: 'rgb(59, 130, 246)',
                     fillOpacity: 1,
-                    rotation: user.heading
+                    rotation: user.location.heading
                   }}
                   zIndex={10}
                 />
@@ -83,8 +83,8 @@ const Map = ({ assoc, liveInfo }: Props) => {
                 <Marker
                   key={user.user_id !== '' ? user.user_id : `mark${index}`}
                   position={{
-                    lat: user.latitude,
-                    lng: user.longitude
+                    lat: user.position.latitude,
+                    lng: user.position.longitude
                   }}
                   icon={{
                     url: `/marks/${index + 1}.png`,
