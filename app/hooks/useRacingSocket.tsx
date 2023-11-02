@@ -22,6 +22,7 @@ const useRacingSocket = (assocId: string) => {
     conn.current.onclose = () => {
       setConnecting(false);
       console.log('reconnect');
+      conn.current!.close();
       connectWs();
     };
   }, [assocId]);
@@ -49,6 +50,11 @@ const useRacingSocket = (assocId: string) => {
 
   useEffect(() => {
     connectWs();
+    return () => {
+      if (conn.current) {
+        conn.current.close();
+      }
+    };
   }, [connectWs]);
 
   return { conn, connecting };

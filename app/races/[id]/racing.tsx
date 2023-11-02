@@ -8,7 +8,7 @@ import useRacingSocket from '../../hooks/useRacingSocket';
 
 const Racing = ({ assoc }: { assoc: Association }) => {
   // Connect the racing socket
-  const { conn } = useRacingSocket(assoc.id);
+  const { conn, connecting } = useRacingSocket(assoc.id);
   const [liveInfo, setLiveInfo] = useState<LiveMessage | null>(null);
   const [startRaceInfo, setStartRaceInfo] = useState<StartRaceMessage | null>(null);
 
@@ -25,7 +25,7 @@ const Racing = ({ assoc }: { assoc: Association }) => {
       setStartRaceInfo(msg);
       console.log(msg);
     };
-  }, [conn]);
+  }, [conn, connecting]);
 
   return (
     <div className="w-full h-full grid grid-cols-4">
