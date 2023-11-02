@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Racing from './racing';
 import type { Association } from '../../models';
 
-export const config = { runtime: 'edge' };
+export const runtime = 'edge';
 
 interface Props {
   params: { id: string };
