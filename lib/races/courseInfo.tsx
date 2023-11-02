@@ -46,7 +46,7 @@ const CourseInfo = ({ marks }: Props) => {
     const prepared = [];
 
     for (let i = 0; i < marks.length; i++) {
-      if (marks[i].user_id !== '') {
+      if (marks[i].position.latitude !== 0 || marks[i].position.longitude !== 0) {
         prepared.push(i + 1);
       }
     }
