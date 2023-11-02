@@ -81,7 +81,7 @@ const Map = ({ assoc, liveInfo }: Props) => {
 
               {liveInfo.marks.map((user, index) =>
                 <Marker
-                  key={user.user_id !== '' ? user.user_id : `mark${index}`}
+                  key={user.user_id !== '' ? user.user_id : `mark${index+1}`}
                   position={{
                     lat: user.position.latitude,
                     lng: user.position.longitude
