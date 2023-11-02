@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import Racing from '../../../lib/races/racing';
-import type { Association } from '../../../models';
+import Racing from './racing';
+import type { Association } from '../../models';
 
 export const config = { runtime: 'edge' };
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import type { Association, LiveMessage, StartRaceMessage } from '../../models';
 import Map from './map';
 import Menu from './menu';
-import useRacingSocket from './useRacingSocket';
+import useRacingSocket from '../../hooks/useRacingSocket';
 
 const Racing = ({ assoc }: { assoc: Association }) => {
   // Connect the racing socket

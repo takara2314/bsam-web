@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { LiveMessage, StartRaceMessage, RacingSocket } from '../../models';
+import type { LiveMessage, StartRaceMessage, RacingSocket } from '../models';
 
 const useRacingSocket = (assocId: string) => {
   const conn = useRef<RacingSocket>();
