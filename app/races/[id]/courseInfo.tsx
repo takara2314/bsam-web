@@ -46,7 +46,7 @@ const CourseInfo = ({ marks }: Props) => {
     const prepared = [];
 
     for (let i = 0; i < marks.length; i++) {
-      if (marks[i].position.latitude !== 0 || marks[i].position.longitude !== 0) {
+      if (isValidMark(marks[i])) {
         prepared.push(i + 1);
       }
     }
@@ -111,8 +111,12 @@ const Distance = ({markA, markB, distance, position}: DistanceProps) => {
   );
 };
 
+const isValidMark = (mark: Mark): boolean => {
+  return mark.position.latitude !== 0 || mark.position.longitude !== 0;
+};
+
 const isEachValidMark = (markA: Mark, markB: Mark): boolean => {
-  return markA.user_id !== '' && markB.user_id !== '';
+  return isValidMark(markA) && isValidMark(markB);
 };
 
 const calcDistanceMarkToMark = (markA: Mark, markB: Mark): number => {
