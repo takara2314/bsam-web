@@ -5,8 +5,8 @@ export interface LiveMessage {
 
 export interface StartRaceMessage {
   started: boolean
-  start_at: number
-  end_at: number
+  start_at: bigint
+  end_at: bigint
 }
 
 export interface Athlete {
@@ -37,6 +37,12 @@ export interface Location {
   accuracy: number
   heading: number
   heading_fixing: number
+}
+
+export interface Duration {
+  minutes: number
+  seconds: number
+  millisecondsHead2: number
 }
 
 export interface RacingSocket extends WebSocket {

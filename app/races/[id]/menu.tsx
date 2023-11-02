@@ -18,7 +18,7 @@ const Menu = ({ assoc, liveInfo, startRaceInfo }: Props) => {
         raceName={assoc.race_name}
         assocName={assoc.name}
       />
-      <Stopwatch started={startRaceInfo?.started ?? false} />
+      <Stopwatch info={startRaceInfo} />
       <AthleteInfo />
       <CourseInfo marks={liveInfo ? liveInfo.marks : null} />
       <Copyright />
