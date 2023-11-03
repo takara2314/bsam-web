@@ -13,7 +13,7 @@ interface Props {
 
 const Menu = ({ assoc, liveInfo, startRaceInfo }: Props) => {
   return (
-    <nav className="px-5 py-5 2xl:py-8 col-span-1 relative overflow-hidden">
+    <nav className="px-5 py-5 2xl:py-8 md:col-span-1 relative overflow-hidden hidden md:block">
       <Title
         raceName={assoc.race_name}
         assocName={assoc.name}
