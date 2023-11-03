@@ -37,6 +37,26 @@ const Map = ({ assoc, liveInfo }: Props) => {
     setMap(null);
   }, []);
 
+  const colorsByAthlete: { [key: string]: string } = {
+    'athlete1': 'yellow',
+    'athlete2': 'blue',
+    'athlete3': 'white',
+    'athlete4': 'green',
+    'athlete5': 'yellow',
+    'athlete6': 'pink',
+    'athlete7': 'blue',
+    'athlete8': 'white',
+    'athlete9': 'green',
+    'athlete10': 'pink'
+  };
+
+  const getColorByAthlete = (athleteId: string): string => {
+    if (athleteId in colorsByAthlete) {
+      return colorsByAthlete[athleteId];
+    }
+    return 'blue';
+  };
+
   return (
     <>
       {isLoaded ? (
@@ -62,6 +82,21 @@ const Map = ({ assoc, liveInfo }: Props) => {
                 <Marker
                   key={user.user_id}
                   position={{
+                    lat: user.location.latitude + 0.000025,
+                    lng: user.location.longitude + 0.000025
+                  }}
+                  icon={{
+                    url: `/sails/${Number(user.user_id.replace('athlete', ''))}.png`,
+                    scaledSize: new google.maps.Size(40, 40)
+                  }}
+                  opacity={0.75}
+                  zIndex={5}
+                />
+              )}
+              {liveInfo.athletes.map((user) =>
+                <Marker
+                  key={user.user_id}
+                  position={{
                     lat: user.location.latitude,
                     lng: user.location.longitude
                   }}
@@ -71,7 +106,7 @@ const Map = ({ assoc, liveInfo }: Props) => {
                     strokeColor: 'white',
                     strokeOpacity: 0.5,
                     strokeWeight: 2,
-                    fillColor: 'rgb(59, 130, 246)',
+                    fillColor: getColorByAthlete(user.user_id),
                     fillOpacity: 1,
                     rotation: user.location.heading
                   }}
