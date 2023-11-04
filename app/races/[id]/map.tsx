@@ -82,12 +82,12 @@ const Map = ({ assoc, liveInfo }: Props) => {
                 <Marker
                   key={user.user_id}
                   position={{
-                    lat: user.location.latitude + 0.000025,
-                    lng: user.location.longitude + 0.000025
+                    lat: user.location.latitude + 0.00000025,
+                    lng: user.location.longitude + 0.00000025
                   }}
                   icon={{
                     url: `/sails/${Number(user.user_id.replace('athlete', ''))}.png`,
-                    scaledSize: new google.maps.Size(40, 40)
+                    scaledSize: new google.maps.Size(30, 30)
                   }}
                   opacity={0.75}
                   zIndex={5}
