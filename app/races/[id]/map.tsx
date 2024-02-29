@@ -20,17 +20,13 @@ const Map = ({ assoc, liveInfo }: Props) => {
   });
 
   const onLoad = useCallback((map: google.maps.Map) => {
-    const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);
     setMap(map);
 
-    setTimeout(() => {
-      map.setCenter({
-        lat: Number(process.env.NEXT_PUBLIC_LATITUDE ?? 0.0),
-        lng: Number(process.env.NEXT_PUBLIC_LONGITUDE ?? 0.0)
-      });
-      map.setZoom(zoomNum);
-    }, 100);
+    map.setCenter({
+      lat: Number(process.env.NEXT_PUBLIC_LATITUDE ?? 0.0),
+      lng: Number(process.env.NEXT_PUBLIC_LONGITUDE ?? 0.0)
+    });
+    map.setZoom(zoomNum);
   }, []);
 
   const onUnmount = useCallback(() => {
