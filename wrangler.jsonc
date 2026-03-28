@@ -20,5 +20,13 @@
   "observability": {
     "enabled": true
   },
+  "workers_dev": true,
+  "preview_urls": true,
+  "routes": [
+    {
+      "pattern": "monitor.bsam.app",
+      "custom_domain": true
+    }
+  ],
   "upload_source_maps": true
 }
