@@ -10,8 +10,7 @@ interface Props {
 
 type AdvancedMarker = google.maps.marker.AdvancedMarkerElement;
 
-const DEFAULT_MAP_ID =
-  process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID ?? "DEMO_MAP_ID";
+const DEFAULT_MAP_ID = "DEMO_MAP_ID";
 
 const COLORS_BY_ATHLETE: Record<string, string> = {
   athlete1: "yellow",
