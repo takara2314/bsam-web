@@ -1,11 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=M+PLUS+1p:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=M+PLUS+1p:wght@400;500;700&display=swap");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Inter, "M PLUS 1p", Meiryo, sans-serif;
+  --font-time: "JetBrains Mono", Inter, Meiryo, sans-serif;
+}
 
 body {
-    width: 100svw;
-    height: 100svh;
-    @apply text-gray-900 bg-gray-100;
+  width: 100svw;
+  height: 100svh;
+  @apply text-gray-900 bg-gray-100;
 }

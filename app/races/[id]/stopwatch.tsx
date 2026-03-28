@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useInterval } from 'usehooks-ts';
-import type { Duration, StartRaceMessage } from '../../models';
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import type { Duration, StartRaceMessage } from "../../models";
 
 interface Props {
   info: StartRaceMessage | null;
 }
 
-const calculateDuration = (unixNanoTime1: bigint, unixNanoTime2: bigint): Duration => {
+const calculateDuration = (
+  unixNanoTime1: bigint,
+  unixNanoTime2: bigint,
+): Duration => {
   // 環境によって自動的にnumber型に変換されてしまう
   unixNanoTime1 = BigInt(unixNanoTime1);
   unixNanoTime2 = BigInt(unixNanoTime2);
@@ -20,7 +24,7 @@ const calculateDuration = (unixNanoTime1: bigint, unixNanoTime2: bigint): Durati
   return {
     minutes: Number(minutes),
     seconds: Number(seconds),
-    millisecondsHead2: Number(millisecondsHead2)
+    millisecondsHead2: Number(millisecondsHead2),
   };
 };
 
@@ -31,7 +35,7 @@ const calculateDurationSinceNow = (unixNanoTime: bigint): Duration => {
   return {
     minutes: Math.max(duration.minutes, 0),
     seconds: Math.max(duration.seconds, 0),
-    millisecondsHead2: Math.max(duration.millisecondsHead2, 0)
+    millisecondsHead2: Math.max(duration.millisecondsHead2, 0),
   };
 };
 
@@ -39,50 +43,71 @@ const Stopwatch = ({ info }: Props) => {
   const [duration, setDuration] = useState<Duration>({
     minutes: 0,
     seconds: 0,
-    millisecondsHead2: 0
+    millisecondsHead2: 0,
   });
 
   const intervalUpdateMs = 50;
 
-  let enable = false;
-  let started = false;
-  let ended = false;
-
-  if (info) {
-    started = info.started;
-    ended = !started && (info.end_at != BigInt(0));
-
-    if (info.started || info.end_at != BigInt(0)) {
-      enable = true;
+  const { enable, started, ended } = useMemo(() => {
+    if (!info) {
+      return {
+        enable: false,
+        started: false,
+        ended: false,
+      };
     }
-  }
 
-  useInterval(
-    () => {
-      setDuration(calculateDurationSinceNow(info!.start_at));
-    },
-    started ? intervalUpdateMs : null
-  );
+    const raceStarted = info.started;
+    const raceEnded = !raceStarted && info.end_at !== BigInt(0);
+
+    return {
+      enable: raceStarted || info.end_at !== BigInt(0),
+      started: raceStarted,
+      ended: raceEnded,
+    };
+  }, [info]);
 
   useEffect(() => {
-    if (!ended) {
+    if (!started || !info) {
       return;
     }
-    setDuration(calculateDuration(info!.start_at, info!.end_at));
-  }, [ended, info]);
+
+    setDuration(calculateDurationSinceNow(info.start_at));
+
+    const intervalId = window.setInterval(() => {
+      setDuration(calculateDurationSinceNow(info.start_at));
+    }, intervalUpdateMs);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [info, started]);
+
+  useEffect(() => {
+    if (!ended || !info) {
+      if (!enable) {
+        setDuration({
+          minutes: 0,
+          seconds: 0,
+          millisecondsHead2: 0,
+        });
+      }
+      return;
+    }
+
+    setDuration(calculateDuration(info.start_at, info.end_at));
+  }, [enable, ended, info]);
 
   return (
     <section className="mt-4 2xl:mt-8 mb-4 2xl:mb-5 py-3 w-full text-3xl 2xl:text-4xl text-center font-time font-medium bg-white rounded-xl">
       {enable ? (
         <span className="text-blue-800">
-          {duration!.minutes.toString().padStart(2, '0')}
-          :{duration!.seconds.toString().padStart(2, '0')}
-          .{duration!.millisecondsHead2.toString().padStart(2, '0')}
+          {duration!.minutes.toString().padStart(2, "0")}:
+          {duration!.seconds.toString().padStart(2, "0")}.
+          {duration!.millisecondsHead2.toString().padStart(2, "0")}
         </span>
       ) : (
-        <span className="text-gray-500">
-          --:--.--
-        </span>
+        <span className="text-gray-500">--:--.--</span>
       )}
     </section>
   );
