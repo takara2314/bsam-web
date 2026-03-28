@@ -1,11 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Duration, StartRaceMessage } from "../../models";
 
 interface Props {
   info: StartRaceMessage | null;
 }
+
+const EMPTY_DURATION: Duration = {
+  minutes: 0,
+  seconds: 0,
+  millisecondsHead2: 0,
+};
 
 const calculateDuration = (
   unixNanoTime1: bigint,
@@ -40,32 +46,11 @@ const calculateDurationSinceNow = (unixNanoTime: bigint): Duration => {
 };
 
 const Stopwatch = ({ info }: Props) => {
-  const [duration, setDuration] = useState<Duration>({
-    minutes: 0,
-    seconds: 0,
-    millisecondsHead2: 0,
-  });
-
+  const [duration, setDuration] = useState<Duration>(EMPTY_DURATION);
   const intervalUpdateMs = 50;
-
-  const { enable, started, ended } = useMemo(() => {
-    if (!info) {
-      return {
-        enable: false,
-        started: false,
-        ended: false,
-      };
-    }
-
-    const raceStarted = info.started;
-    const raceEnded = !raceStarted && info.end_at !== BigInt(0);
-
-    return {
-      enable: raceStarted || info.end_at !== BigInt(0),
-      started: raceStarted,
-      ended: raceEnded,
-    };
-  }, [info]);
+  const started = info?.started ?? false;
+  const ended = !!info && !started && info.end_at !== BigInt(0);
+  const enable = !!info && (started || info.end_at !== BigInt(0));
 
   useEffect(() => {
     if (!started || !info) {
@@ -86,11 +71,7 @@ const Stopwatch = ({ info }: Props) => {
   useEffect(() => {
     if (!ended || !info) {
       if (!enable) {
-        setDuration({
-          minutes: 0,
-          seconds: 0,
-          millisecondsHead2: 0,
-        });
+        setDuration(EMPTY_DURATION);
       }
       return;
     }
@@ -102,9 +83,9 @@ const Stopwatch = ({ info }: Props) => {
     <section className="mt-4 2xl:mt-8 mb-4 2xl:mb-5 py-3 w-full text-3xl 2xl:text-4xl text-center font-time font-medium bg-white rounded-xl">
       {enable ? (
         <span className="text-blue-800">
-          {duration!.minutes.toString().padStart(2, "0")}:
-          {duration!.seconds.toString().padStart(2, "0")}.
-          {duration!.millisecondsHead2.toString().padStart(2, "0")}
+          {duration.minutes.toString().padStart(2, "0")}:
+          {duration.seconds.toString().padStart(2, "0")}.
+          {duration.millisecondsHead2.toString().padStart(2, "0")}
         </span>
       ) : (
         <span className="text-gray-500">--:--.--</span>

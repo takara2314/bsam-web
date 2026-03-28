@@ -11,6 +11,21 @@ interface Props {
 type AdvancedMarker = google.maps.marker.AdvancedMarkerElement;
 
 const DEFAULT_MAP_ID = "DEMO_MAP_ID";
+const DEFAULT_MAP_CENTER = {
+  lat: Number(process.env.NEXT_PUBLIC_LATITUDE ?? 0),
+  lng: Number(process.env.NEXT_PUBLIC_LONGITUDE ?? 0),
+};
+const DEFAULT_MAP_ZOOM = 18;
+const MAP_CONTAINER_STYLE = {
+  width: "100%",
+  height: "100%",
+};
+const MAP_OPTIONS = {
+  disableDefaultUI: true,
+  disableDoubleClickZoom: true,
+  mapTypeId: "satellite" as const,
+  mapId: DEFAULT_MAP_ID,
+};
 
 const COLORS_BY_ATHLETE: Record<string, string> = {
   athlete1: "yellow",
@@ -36,7 +51,6 @@ const getColorByAthlete = (athleteId: string): string => {
 const Map = ({ liveInfo }: Props) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const markersRef = useRef<AdvancedMarker[]>([]);
-  const zoomNum = 18;
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -125,11 +139,8 @@ const Map = ({ liveInfo }: Props) => {
   }, [liveInfo, map]);
 
   const onLoad = (map: google.maps.Map) => {
-    map.setCenter({
-      lat: Number(process.env.NEXT_PUBLIC_LATITUDE ?? 0.0),
-      lng: Number(process.env.NEXT_PUBLIC_LONGITUDE ?? 0.0),
-    });
-    map.setZoom(zoomNum);
+    map.setCenter(DEFAULT_MAP_CENTER);
+    map.setZoom(DEFAULT_MAP_ZOOM);
     setMap(map);
   };
 
@@ -143,19 +154,11 @@ const Map = ({ liveInfo }: Props) => {
     <>
       {isLoaded ? (
         <GoogleMap
-          mapContainerStyle={{
-            width: "100%",
-            height: "100%",
-          }}
-          zoom={zoomNum}
+          mapContainerStyle={MAP_CONTAINER_STYLE}
+          zoom={DEFAULT_MAP_ZOOM}
           tilt={0}
           onLoad={onLoad}
-          options={{
-            disableDefaultUI: true,
-            disableDoubleClickZoom: true,
-            mapTypeId: "satellite",
-            mapId: DEFAULT_MAP_ID,
-          }}
+          options={MAP_OPTIONS}
           onUnmount={onUnmount}
         />
       ) : (
