@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Racing from "./racing";
 import type { Association } from "../../models";
+
 export const metadata: Metadata = {
   title: "レースモニター",
   robots: {
