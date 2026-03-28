@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Racing from "./racing";
 import type { Association } from "../../models";
 
-export const runtime = "edge";
 export const metadata: Metadata = {
   title: "レースモニター",
   robots: {
