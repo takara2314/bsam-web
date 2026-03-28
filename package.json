@@ -6,10 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
     "format": "prettier --write .",
     "lint": "eslint"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.18.0",
     "@react-google-maps/api": "^2.20.8",
     "next": "16.2.1",
     "react": "19.2.4",
@@ -25,6 +30,7 @@
     "eslint-config-next": "16.2.1",
     "prettier": "^3.8.1",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.78.0"
   }
 }
