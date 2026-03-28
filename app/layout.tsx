@@ -7,9 +7,7 @@ export const metadata: Metadata = {
     template: "%s | B-SAM",
   },
   icons: {
-    icon: [
-      { url: "/logo.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
     shortcut: "/logo.svg",
     apple: "/logo.svg",
   },
