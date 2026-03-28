@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { calcDistance } from "../../utils/geo";
 import type { Mark } from "../../models";
 
@@ -13,50 +12,15 @@ interface DistanceProps {
   position: string;
 }
 
+const EMPTY_DISTANCES = {
+  distance1to2: 0,
+  distance2to3: 0,
+  distance1to3: 0,
+};
+
 const CourseInfo = ({ marks }: Props) => {
-  const distances = useMemo(() => {
-    if (!marks) {
-      return {
-        distance1to2: 0,
-        distance2to3: 0,
-        distance1to3: 0,
-      };
-    }
-
-    return {
-      distance1to2: isEachValidMark(marks[0], marks[1])
-        ? calcDistanceMarkToMark(marks[0], marks[1])
-        : 0,
-      distance2to3: isEachValidMark(marks[1], marks[2])
-        ? calcDistanceMarkToMark(marks[1], marks[2])
-        : 0,
-      distance1to3: isEachValidMark(marks[0], marks[2])
-        ? calcDistanceMarkToMark(marks[0], marks[2])
-        : 0,
-    };
-  }, [marks]);
-
-  // Example: [{user_id: ''}, {user_id: 'example_B'}, {user_id: 'example_C'}]
-  // -> setOutlineImg('/course-outlines/2-3.svg');
-  const outlineImg = useMemo(() => {
-    if (!marks) {
-      return "/course-outlines/none.svg";
-    }
-
-    const prepared: number[] = [];
-
-    for (let i = 0; i < marks.length; i++) {
-      if (isValidMark(marks[i])) {
-        prepared.push(i + 1);
-      }
-    }
-
-    if (prepared.length === 0) {
-      return "/course-outlines/none.svg";
-    }
-
-    return `/course-outlines/${prepared.join("-")}.svg`;
-  }, [marks]);
+  const distances = calculateDistances(marks);
+  const outlineImg = getOutlineImage(marks);
 
   return (
     <section className="mt-4 2xl:mt-5 w-full aspect-video relative">
@@ -129,6 +93,40 @@ const calcDistanceMarkToMark = (markA: Mark, markB: Mark): number => {
   );
 
   return Math.floor(distance);
+};
+
+const calculateDistances = (marks: Mark[] | null) => {
+  if (!marks) {
+    return EMPTY_DISTANCES;
+  }
+
+  return {
+    distance1to2: isEachValidMark(marks[0], marks[1])
+      ? calcDistanceMarkToMark(marks[0], marks[1])
+      : 0,
+    distance2to3: isEachValidMark(marks[1], marks[2])
+      ? calcDistanceMarkToMark(marks[1], marks[2])
+      : 0,
+    distance1to3: isEachValidMark(marks[0], marks[2])
+      ? calcDistanceMarkToMark(marks[0], marks[2])
+      : 0,
+  };
+};
+
+const getOutlineImage = (marks: Mark[] | null) => {
+  if (!marks) {
+    return "/course-outlines/none.svg";
+  }
+
+  const prepared = marks.flatMap((mark, index) =>
+    isValidMark(mark) ? [index + 1] : [],
+  );
+
+  if (prepared.length === 0) {
+    return "/course-outlines/none.svg";
+  }
+
+  return `/course-outlines/${prepared.join("-")}.svg`;
 };
 
 export default CourseInfo;
